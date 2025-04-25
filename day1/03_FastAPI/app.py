@@ -13,7 +13,10 @@ from pyngrok import ngrok
 
 # --- 設定 ---
 # モデル名を設定
-MODEL_NAME = "google/gemma-2-2b-jpn-it"  # お好みのモデルに変更可能です
+# MODEL_NAME = "google/gemma-2-2b-jpn-it"  # お好みのモデルに変更可能です
+MODEL_NAME = "cyberagent/open-calm-small" # 正しく動かない
+MODEL_NAME = "rinna/japanese-gpt2-xsmall" # 応答を生成できませんでした。との出力
+MODEL_NAME = "rinna/bilingual-gpt-neox-4b-instruction-ppo" # 精度は悪いが動く
 print(f"モデル名を設定: {MODEL_NAME}")
 
 # --- モデル設定クラス ---
