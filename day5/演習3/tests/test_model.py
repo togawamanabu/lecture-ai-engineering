@@ -189,6 +189,6 @@ def test_model_accuracy_against_baseline(train_model):
         baseline = json.load(f)
 
     baseline_accuracy = baseline.get("accuracy", 0.0)
-    assert accuracy >= baseline_accuracy, (
-        f"精度がベースラインを下回っています: 現在 {accuracy:.3f}, ベースライン {baseline_accuracy:.3f}"
-    )
+    assert (
+        accuracy >= baseline_accuracy
+    ), f"精度がベースラインを下回っています: 現在 {accuracy:.3f}, ベースライン {baseline_accuracy:.3f}"
