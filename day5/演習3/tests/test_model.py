@@ -11,6 +11,9 @@ from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
+import json
+
+BASELINE_PATH = os.path.join(os.path.dirname(__file__), "baseline.json")
 
 # テスト用データとモデルパスを定義
 DATA_PATH = os.path.join(os.path.dirname(__file__), "../data/Titanic.csv")
@@ -171,3 +174,21 @@ def test_model_reproducibility(sample_data, preprocessor):
     assert np.array_equal(
         predictions1, predictions2
     ), "モデルの予測結果に再現性がありません"
+
+
+def test_model_accuracy_against_baseline(train_model):
+    """過去のベースラインと比較して精度が劣化していないか確認"""
+    model, X_test, y_test = train_model
+    y_pred = model.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+
+    if not os.path.exists(BASELINE_PATH):
+        pytest.skip("ベースラインファイルが存在しません")
+
+    with open(BASELINE_PATH, "r") as f:
+        baseline = json.load(f)
+
+    baseline_accuracy = baseline.get("accuracy", 0.0)
+    assert (
+        accuracy >= baseline_accuracy
+    ), f"精度がベースラインを下回っています: 現在 {accuracy:.3f}, ベースライン {baseline_accuracy:.3f}"
